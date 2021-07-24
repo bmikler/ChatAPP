@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+{% if session.name %}
+
+login as {{ session.name }} <a href="/logout">logout</a>
+
+<div>
+    <form action="/send" method="post">
+
+        <input type="text" name="message" autocomplete="off">
+        <input type="submit" value="send">
+
+        <chatbox>
+            {% for messege in messeges %}
+            <p>
+                {{ messege.sender }}: {{ messege.text }}
+            </p>
+
+
+            {% endfor %}
+        </chatbox>
+    </form>
+</div>
+
+{% else %}
+
+Please log in. <a href="/login">login</a>
+
+{% endif %}
+
+{% endblock %}
