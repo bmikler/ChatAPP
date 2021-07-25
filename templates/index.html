@@ -4,25 +4,32 @@
 
 {% if session.name %}
 
-login as {{ session.name }} <a href="/logout">logout</a>
+<form action="/send" method="post">
 
-<div>
-    <form action="/send" method="post">
-
-        <input type="text" name="message" autocomplete="off">
-        <input type="submit" value="send">
-
-        <chatbox>
-            {% for messege in messeges %}
-            <p>
-                {{ messege.sender }}: {{ messege.text }}
-            </p>
+<h1>Chatbox &#128172</h1>
+<h2>login as {{ session.name }} <a href="/logout">logout</a> </h2>
 
 
-            {% endfor %}
-        </chatbox>
-    </form>
+<div class="chatbox">
+    {% for messege in messeges %}
+    {%if messege.sender == session.name %}
+    <p class="sender">{{ messege.text }}</p>
+    {% else %}
+    <p><span class="reciever-name">{{ messege.sender }}:</span> <span class="reciever-messege">{{ messege.text }}</span></p>
+        {% endif %}
+
+
+        {% endfor %}
 </div>
+
+
+    <input type="text" name="message" autocomplete="off" autofocus>
+    <input type="submit" value="send">
+
+</form>
+
+</form>
+
 
 {% else %}
 
