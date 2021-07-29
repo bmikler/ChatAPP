@@ -4,13 +4,14 @@
 
 <div class="menu">
     <div class="header"><h1>CHATBOX &#128172</h1></div>
-<form action = "/login" method="post">
+<form action="/register" method="post">
     {{ error }}
     <p><input name="username" type="text" placeholder="Username" autofocus autocomplete="off"></p>
     <p><input name="password" type="password" placeholder="Password" autocomplete="off"></p>
-    <button type="submit">Log in</button>
+    <p><input name="confirmation" type="password" placeholder="Confirm password" autocomplete="off"></p>
+    <button type="submit">Register</button>
 </form>
-    <p><a href="/register">Register</a></p>
+    <p><a href="/login">Login</a></p>
 </div>
 
 {% endblock %}

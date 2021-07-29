@@ -6,7 +6,7 @@
     <div class="header">
         <h1>CHATBOX &#128172</h1>
     </div>
-    {% if session.name %}
+    {% if session.user_id %}
 
     <script>
 
@@ -15,13 +15,12 @@
             $("#chatbox").load("/chatbox");
             setInterval(function () {
                 $("#chatbox").load("/chatbox");
-                $('#chatbox').animate({scrollTop: 100000000}, 800);
             }, 5000);
         });
 
     </script>
     <div class="main ">
-        You are login as: <h2>{{ session.name }}</h2> <a href="/logout">logout</a>
+        You are login as: <h2>{{ session.username }}</h2> <a href="/logout">logout</a>
     </div>
 
     <div id="chatbox" class="chatbox">
