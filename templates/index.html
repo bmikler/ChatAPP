@@ -2,34 +2,43 @@
 
 {% block body %}
 
-        {% if session.name %}
-        
-        <script>
-        
-            $(document).ready(function(){
-		        $("#chatbox").load("/chatbox");
-		        setInterval(function(){
-		            $("#chatbox").load("/chatbox");
-		        }, 5000);
-            });
+<div class="container">
+    <div class="header">
+        <h1>CHATBOX &#128172</h1>
+    </div>
+    {% if session.name %}
 
-        </script>
-        
-        login as {{ session.name }} <a href="/logout">logout</a>
-        
-        <div id="chatbox">
-        </div>
-        
+    <script>
+
+        $(document).ready(function () {
+            $('#chatbox').animate({scrollTop: 100000000}, 800);
+            $("#chatbox").load("/chatbox");
+            setInterval(function () {
+                $("#chatbox").load("/chatbox");
+                $('#chatbox').animate({scrollTop: 100000000}, 800);
+            }, 5000);
+        });
+
+    </script>
+    <div class="main ">
+        You are login as: <h2>{{ session.name }}</h2> <a href="/logout">logout</a>
+    </div>
+
+    <div id="chatbox" class="chatbox">
+    </div>
+
+    <div class="footer">
         <form action="/send" method="post">
-        
-            <input type="text" name="message" autocomplete="off">
-            <input type="submit" value="send">
-        </form>
 
-        {% else %}
-            
-        Please log in. <a href="/login">login</a>
-            
-        {% endif %}
+            <input type="text" name="message" autocomplete="off" autofocus>
+            <button type="submit" value="send">SEND</button>
+        </form>
+    </div>
+    {% else %}
+
+    Please log in. <a href="/login">login</a>
+
+    {% endif %}
+</div>
 
 {% endblock %}

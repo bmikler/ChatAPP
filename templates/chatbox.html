@@ -3,12 +3,13 @@
 {% block body %}
 
     <div id="chatbox">
-            {% for messege in messeges %}
-        <p>
-            {{ messege.sender }}: {{ messege.text }}
-        </p>
-
-        {% endfor %}
+    {% for messege in messeges %}
+        {%if messege.sender == session.name %}
+            <p class="message user_message">{{ messege.text }}</p>
+        {% else %}
+            <p class="message"><span class="sender">{{ messege.sender }}:</span> {{ messege.text }}</p>
+        {% endif %}
+    {% endfor %}
     </div>
 
 {% endblock %}
