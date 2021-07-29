@@ -2,39 +2,34 @@
 
 {% block body %}
 
-{% if session.name %}
+        {% if session.name %}
+        
+        <script>
+        
+            $(document).ready(function(){
+		        $("#chatbox").load("/chatbox");
+		        setInterval(function(){
+		            $("#chatbox").load("/chatbox");
+		        }, 5000);
+            });
 
-<form action="/send" method="post">
+        </script>
+        
+        login as {{ session.name }} <a href="/logout">logout</a>
+        
+        <div id="chatbox">
+        </div>
+        
+        <form action="/send" method="post">
+        
+            <input type="text" name="message" autocomplete="off">
+            <input type="submit" value="send">
+        </form>
 
-<h1>Chatbox &#128172</h1>
-<h2>login as {{ session.name }} <a href="/logout">logout</a> </h2>
-
-
-<div class="chatbox">
-    {% for messege in messeges %}
-    {%if messege.sender == session.name %}
-    <p class="sender">{{ messege.text }}</p>
-    {% else %}
-    <p><span class="reciever-name">{{ messege.sender }}:</span> <span class="reciever-messege">{{ messege.text }}</span></p>
+        {% else %}
+            
+        Please log in. <a href="/login">login</a>
+            
         {% endif %}
-
-
-        {% endfor %}
-</div>
-
-
-    <input type="text" name="message" autocomplete="off" autofocus>
-    <input type="submit" value="send">
-
-</form>
-
-</form>
-
-
-{% else %}
-
-Please log in. <a href="/login">login</a>
-
-{% endif %}
 
 {% endblock %}

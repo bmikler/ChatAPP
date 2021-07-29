@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <div id="chatbox">
+            {% for messege in messeges %}
+        <p>
+            {{ messege.sender }}: {{ messege.text }}
+        </p>
+
+        {% endfor %}
+    </div>
+
+{% endblock %}
