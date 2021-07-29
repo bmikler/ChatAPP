@@ -28,11 +28,11 @@ body{
     text-align: center;
     color: white;
     padding: 15px;
+    margin-bottom: 10px;
 }
 
 h2{
     color: white;
-    padding: 5px;
 }
 
 .chatbox{
@@ -93,7 +93,8 @@ form button{
 
 .main{
     background-color: rgb(64, 64, 165);
-    padding:5px;
+    margin-bottom: 10px;
+    margin-left: 10px;
 }
 
 a{
@@ -106,18 +107,20 @@ a:visited {
 
 .menu{
     background-color: rgb(64, 64, 165);
+    padding: 20px;
 }
 
 .menu input{
     margin:0 auto;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     display:block;
 }
 
 .menu button{
     margin:0 auto;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     display:block;
+    padding: 5px;
 }
 
 .date{
@@ -127,4 +130,18 @@ a:visited {
 
 .user_date{
     margin-left: auto;
+}
+
+.menu a{
+    margin:0 auto;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    display:block;
+    text-align: right;
+
+}
+
+.error{
+    padding: 5px;
+    text-align: center;
 }

@@ -39,9 +39,15 @@ def register():
 
         if request.form.get("username") in users:
             return render_template("register.html", error = "Username already taken.")
+        
+        if len(request.form.get("username")) < 5:
+            return render_template("register.html", error = "Username to short (min 5 characters).")
 
         if not request.form.get("password"):
             return render_template("register.html", error = "Please prompot password.")
+            
+        if len(request.form.get("password")) < 5:
+            return render_template("register.html", error = "Password (min 5 characters).")
 
         if not request.form.get("confirmation"):
             return render_template("register.html", error = "Please confirm password.")
@@ -51,7 +57,7 @@ def register():
 
         db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", request.form.get(
             "username"), generate_password_hash(request.form.get("password")))
-        return render_template("login.html")
+        return render_template("login.html", error = "You are register. Please login.")
 
     return render_template("register.html")
 

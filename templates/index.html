@@ -11,9 +11,10 @@
     <script>
 
         $(document).ready(function () {
-            $('#chatbox').animate({scrollTop: 100000000}, 800);
+            $('#chatbox').animate({ scrollTop: 100000000 }, 800);
             $("#chatbox").load("/chatbox");
             setInterval(function () {
+                $('#chatbox').animate({ scrollTop: 100000000 }, 800);
                 $("#chatbox").load("/chatbox");
             }, 5000);
         });
