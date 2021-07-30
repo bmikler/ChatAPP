@@ -19,6 +19,7 @@ db = SQL("sqlite:///messages.db")
 
 @app.route("/")
 def index():
+# if user is not loged redirect to login template
     if not session.get("user_id"):
         return redirect("/login")
 
@@ -107,9 +108,11 @@ def logout():
 def send():
     text = request.form.get("message")
 
+    # check actual date and time
     now = datetime.now()
     date = now.strftime("%d/%m/%Y %H:%M:%S")
 
+    # insert new message to database
     if text:
         db.execute("INSERT INTO messages (user_id, text, date) VALUES(?, ?, ?)", session["user_id"], text, date)
     return redirect("/")

@@ -8,16 +8,28 @@
     </div>
     {% if session.user_id %}
 
-    <script>
+    <script tpye="text/javascript">
 
         $(document).ready(function () {
-            $('#chatbox').animate({ scrollTop: 100000000 }, 800);
+            //load chatbox
             $("#chatbox").load("/chatbox");
+            //scroll to the end of chatbox
+            $('#chatbox').animate({ scrollTop: 1000000 }, 800);
+            console.log($("chatbox").scrollTop())
             setInterval(function () {
-                $('#chatbox').animate({ scrollTop: 100000000 }, 800);
-                $("#chatbox").load("/chatbox");
+                //check the hegiht of the chatbox
+                var oldsh = $("#chatbox")[0].scrollHeight;
+                //reaload chatbox
+                $("#chatbox").load("/chatbox", function () {
+                    var newsh = $("#chatbox")[0].scrollHeight;
+                    //if there are any new messagess scroll to the end of the chat
+                    if (newsh > oldsh)
+                        $('#chatbox').animate({ scrollTop: 1000000 }, 800);
+                });
             }, 5000);
         });
+
+
 
     </script>
     <div class="main ">
