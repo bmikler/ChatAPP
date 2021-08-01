@@ -4,6 +4,7 @@ from flask_session import Session
 from cs50 import SQL
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
+from flask_socketio import SocketIO, emit
 
 
 # Configure application
@@ -12,6 +13,7 @@ app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+socketio = SocketIO(app, cors_allowed_origins='*')
 
 Session(app)
 
@@ -23,7 +25,10 @@ def index():
     if not session.get("user_id"):
         return redirect("/login")
 
-    return render_template("index.html")
+    messages_db = db.execute("SELECT * FROM messages")
+    users_db = db.execute("SELECT * FROM users")
+
+    return render_template("index.html", messages_db=messages_db, users_db=users_db)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -85,9 +90,7 @@ def login():
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
         session["username"] = rows[0]["username"]
-
-        print(session["user_id"], session["username"])
-
+        
         # Redirect user to home page
         return redirect("/")
 
@@ -104,22 +107,20 @@ def logout():
     # Redirect user to login form
     return redirect("/")
 
-@app.route("/send", methods=["GET", "POST"])
-def send():
-    text = request.form.get("message")
-
-    # check actual date and time
+# socketio events
+@socketio.on('send_message')
+def handle_send_message_event(data):
+    
+    text = data['message']
+    username = session['username']
+    userid = session['user_id']
     now = datetime.now()
     date = now.strftime("%d/%m/%Y %H:%M:%S")
+    
+    db.execute("INSERT INTO messages (user_id, text, date) VALUES(?, ?, ?)", userid, text, date)
 
-    # insert new message to database
-    if text:
-        db.execute("INSERT INTO messages (user_id, text, date) VALUES(?, ?, ?)", session["user_id"], text, date)
-    return redirect("/")
+    socketio.emit('receive_message', (text, username, userid, date))
 
     
-@app.route("/chatbox")
-def chatbox():
-    messages = db.execute("SELECT * FROM messages")
-    users = db.execute("SELECT * FROM users")
-    return render_template("chatbox.html", messages=messages, users=users)
+if __name__ == '__main__':
+    socketio.run(app, debug=True)
