@@ -27,7 +27,7 @@ def index():
 
     messages_db = db.execute("SELECT * FROM messages")
     users_db = db.execute("SELECT * FROM users")
-
+    # if user is loged render chat with all messages from database
     return render_template("index.html", messages_db=messages_db, users_db=users_db)
 
 @app.route("/register", methods=["GET", "POST"])
@@ -92,6 +92,7 @@ def login():
         session["username"] = rows[0]["username"]
         
         # Redirect user to home page
+        socketio.emit('user_join', (session['username']))
         return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
@@ -99,8 +100,11 @@ def login():
         return render_template("login.html")
 
 
+
 @app.route("/logout")
 def logout():
+
+    socketio.emit('user_left', (session['username']))
     # Forget any user_id
     session.clear()
 

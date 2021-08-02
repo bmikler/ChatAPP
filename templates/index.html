@@ -33,6 +33,21 @@
             message_input.value = '';
             message_input.focus();
          }
+         //user join to chat
+         socket.on('user_join', function(username){
+            const newNode = document.createElement('p');
+            newNode.innerHTML = `<p class="login_info"> **** User ${username} join the chat. ****</p>`;
+            document.getElementById('chatbox').appendChild(newNode);
+            scroll_down();
+         });
+
+         //user left chat
+         socket.on('user_left', function(username){
+            const newNode = document.createElement('p');
+            newNode.innerHTML = `<p class="login_info"> **** User ${username} left chat. ****</p>`;
+            document.getElementById('chatbox').appendChild(newNode);
+            scroll_down();
+         });
 
          //recive message function
          socket.on('receive_message', function(text, username, userid, date){
@@ -47,10 +62,23 @@
                 }
             //print new message and scroll down chatbox
             document.getElementById('chatbox').appendChild(newNode);
-            $('#chatbox').scrollTop($("#chatbox")[0].scrollHeight);
+            scroll_down();
+            
          })
 
       });
+
+      function scroll_down(){
+
+        //actual scroll position
+        var heighta = $('#chatbox').scrollTop();
+        //maximum bottom scroll position
+        var heightb = $("#chatbox")[0].scrollHeight;
+        //auto scroll down if user scroll is on the bottom
+        if ((heightb - heighta) < 1000)
+            $('#chatbox').scrollTop($("#chatbox")[0].scrollHeight);
+
+      }
 
 
     </script>
@@ -73,6 +101,8 @@
         {% endfor %}
 
     </div>
+
+    <div id=alert></div>
 
     <div class="footer">
         <form id="message_input_form">

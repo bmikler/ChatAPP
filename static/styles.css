@@ -145,3 +145,9 @@ a:visited {
     padding: 5px;
     text-align: center;
 }
+
+.login_info{
+    text-align: center;
+    color: white;
+    margin-bottom: 5px;
+}
