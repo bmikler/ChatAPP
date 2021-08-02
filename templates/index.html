@@ -16,7 +16,7 @@
             $('#chatbox').scrollTop($("#chatbox")[0].scrollHeight);
 
             // socketio conection 
-            var socket = io.connect('https://quarrelapp.herokuapp.com/');
+            var socket = io.connect(location.protocol + "//" + document.domain + ":" + location.port);
 
             let message_input = document.getElementById('message');
 

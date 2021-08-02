@@ -127,4 +127,4 @@ def handle_send_message_event(data):
 
     
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app)
