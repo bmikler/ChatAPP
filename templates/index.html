@@ -10,75 +10,75 @@
 
     <script tpye="text/javascript">
 
-    $(document).ready(function(){
+        $(document).ready(function () {
 
-        // scroll to the end of chat
-        $('#chatbox').scrollTop($("#chatbox")[0].scrollHeight);
-
-        // socketio conection 
-         var socket = io.connect('http://127.0.0.1:5000'); 
-
-         let message_input = document.getElementById('message');
-        
-         //take the massage prompt by user and send it via emit to server
-         document.getElementById('message_input_form').onsubmit = function(e){
-            e.preventDefault();
-            let message = message_input.value.trim();
-            if (message.length){
-               socket.emit('send_message', {
-                  message: message
-               });
-            }
-            //clear form with massage and set autofocus on it
-            message_input.value = '';
-            message_input.focus();
-         }
-         //user join to chat
-         socket.on('user_join', function(username){
-            const newNode = document.createElement('p');
-            newNode.innerHTML = `<p class="login_info"> **** User ${username} join the chat. ****</p>`;
-            document.getElementById('chatbox').appendChild(newNode);
-            scroll_down();
-         });
-
-         //user left chat
-         socket.on('user_left', function(username){
-            const newNode = document.createElement('p');
-            newNode.innerHTML = `<p class="login_info"> **** User ${username} left chat. ****</p>`;
-            document.getElementById('chatbox').appendChild(newNode);
-            scroll_down();
-         });
-
-         //recive message function
-         socket.on('receive_message', function(text, username, userid, date){
-            var session_userid = document.getElementById('session_userid').value;
-            //check if actual user is sender of the message
-            const newNode = document.createElement('p');
-                if (session_userid == userid){
-                    newNode.innerHTML = `<p class="date user_date">${date}</p><p class="message user_message">${text}</p>`;
-                }
-                else{
-                    newNode.innerHTML = `<p class="date">${date}</p><p class=message> <span class="sender">${username}:</span>${text}</p>`;
-                }
-            //print new message and scroll down chatbox
-            document.getElementById('chatbox').appendChild(newNode);
-            scroll_down();
-            
-         })
-
-      });
-
-      function scroll_down(){
-
-        //actual scroll position
-        var heighta = $('#chatbox').scrollTop();
-        //maximum bottom scroll position
-        var heightb = $("#chatbox")[0].scrollHeight;
-        //auto scroll down if user scroll is on the bottom
-        if ((heightb - heighta) < 1000)
+            // scroll to the end of chat
             $('#chatbox').scrollTop($("#chatbox")[0].scrollHeight);
 
-      }
+            // socketio conection 
+            var socket = io.connect('https://quarrelapp.herokuapp.com/');
+
+            let message_input = document.getElementById('message');
+
+            //take the massage prompt by user and send it via emit to server
+            document.getElementById('message_input_form').onsubmit = function (e) {
+                e.preventDefault();
+                let message = message_input.value.trim();
+                if (message.length) {
+                    socket.emit('send_message', {
+                        message: message
+                    });
+                }
+                //clear form with massage and set autofocus on it
+                message_input.value = '';
+                message_input.focus();
+            }
+            //user join to chat
+            socket.on('user_join', function (username) {
+                const newNode = document.createElement('p');
+                newNode.innerHTML = `<p class="login_info"> **** User ${username} join the chat. ****</p>`;
+                document.getElementById('chatbox').appendChild(newNode);
+                scroll_down();
+            });
+
+            //user left chat
+            socket.on('user_left', function (username) {
+                const newNode = document.createElement('p');
+                newNode.innerHTML = `<p class="login_info"> **** User ${username} left chat. ****</p>`;
+                document.getElementById('chatbox').appendChild(newNode);
+                scroll_down();
+            });
+
+            //recive message function
+            socket.on('receive_message', function (text, username, userid, date) {
+                var session_userid = document.getElementById('session_userid').value;
+                //check if actual user is sender of the message
+                const newNode = document.createElement('p');
+                if (session_userid == userid) {
+                    newNode.innerHTML = `<p class="date user_date">${date}</p><p class="message user_message">${text}</p>`;
+                }
+                else {
+                    newNode.innerHTML = `<p class="date">${date}</p><p class=message> <span class="sender">${username}:</span>${text}</p>`;
+                }
+                //print new message and scroll down chatbox
+                document.getElementById('chatbox').appendChild(newNode);
+                scroll_down();
+
+            })
+
+        });
+
+        function scroll_down() {
+
+            //actual scroll position
+            var heighta = $('#chatbox').scrollTop();
+            //maximum bottom scroll position
+            var heightb = $("#chatbox")[0].scrollHeight;
+            //auto scroll down if user scroll is on the bottom
+            if ((heightb - heighta) < 1000)
+                $('#chatbox').scrollTop($("#chatbox")[0].scrollHeight);
+
+        }
 
 
     </script>
@@ -92,11 +92,12 @@
         <!--Loop to render all messages from database-->
         {% for message in messages_db %}
         {%if message.user_id == session.user_id %}
-            <p class="date user_date">{{ message.date }}</p>
-            <p class="message user_message"></span>{{ message.text }}</p>
+        <p class="date user_date">{{ message.date }}</p>
+        <p class="message user_message"></span>{{ message.text }}</p>
         {% else %}
-            <p class="date">{{ message.date }}</p>
-            <p class="message"><span class="sender">{{ users_db[message.user_id - 1].username }}:</span> {{ message.text }}</p>
+        <p class="date">{{ message.date }}</p>
+        <p class="message"><span class="sender">{{ users_db[message.user_id - 1].username }}:</span> {{ message.text }}
+        </p>
         {% endif %}
         {% endfor %}
 
