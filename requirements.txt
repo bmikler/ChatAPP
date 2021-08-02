@@ -2,3 +2,4 @@ Flask
 Flask-Session
 cs50
 request
+flask_socketio
